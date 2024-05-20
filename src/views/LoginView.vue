@@ -9,7 +9,9 @@
             >
           </v-toolbar>
           <v-card-text>
+            <!-- Form -->
             <v-form @submit.prevent="login">
+              <!-- text fields -->
               <v-text-field
                 v-model="username"
                 label="Username"
@@ -17,12 +19,18 @@
               />
               <v-text-field
                 v-model="password"
-                type="password"
+                :type="showPassword ? 'text' : 'password'"
                 label="Password"
                 prepend-icon="mdi-lock"
+                :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                @click:append="showPassword = !showPassword"
               />
+              <!-- button -->
               <v-btn type="submit" color="purple" class="btn">Login</v-btn>
-              <v-alert v-if="error" type="error">{{ errorMessage }}</v-alert>
+              <!-- alert message -->
+              <v-alert v-if="error" type="error" class="mt-4">{{
+                errorMessage
+              }}</v-alert>
             </v-form>
           </v-card-text>
         </v-card>
@@ -38,8 +46,10 @@ export default {
     password: "",
     error: false,
     errorMessage: "Username/Password is incorrect.",
+    showPassword: false,
   }),
   methods: {
+    // defining the login method
     login() {
       fetch("https://dummyjson.com/auth/login", {
         method: "POST",
@@ -54,7 +64,7 @@ export default {
           if (data.token) {
             this.$router.push({
               name: "WelcomeView",
-              params: { userId: data.id },
+              params: { userId: data.id }, //sends the user id to the welcome view for another api call
             });
           } else {
             this.error = true;

@@ -9,7 +9,9 @@ npm install
 ```
 npm run serve
 ```
-
+###Example Credentials
+username: kminchelle
+password: 0lelplR
 ### Compiles and minifies for production
 ```
 npm run build

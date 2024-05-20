@@ -37,16 +37,45 @@ export default {
     username: "",
     password: "",
     error: false,
-    errorMessage: "",
+    errorMessage: "Username/Password is incorrect.",
   }),
   methods: {
     login() {
-      if (this.username === "example" && this.password === "password") {
-        this.$router.push({ name: "WelcomeView" });
-      } else {
-        this.error = true;
-        this.errorMessage = "Incorrect username/password";
-      }
+      fetch("https://dummyjson.com/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: this.username,
+          password: this.password,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.token) {
+            this.$router.push({
+              name: "WelcomeView",
+              params: { userId: data.id },
+            });
+          } else {
+            this.error = true;
+            this.errorMessage = "Incorrect username/password";
+          }
+        })
+        .catch((err) => {
+          console.error("Error:", err);
+          this.error = true;
+          this.errorMessage = "Login failed due to server error.";
+        });
+
+      // do this if the api call doen't work
+      //    if (this.username === "example" && this.password === "password") {
+      //         this.$router.push({name: "WelcomePage"}).catch(err => {
+      //             console.error("Router error:", err);
+      //         });
+      //     }
+      //     else {
+      //         this.error = true;
+      //     }
     },
   },
 };

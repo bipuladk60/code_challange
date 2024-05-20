@@ -9,7 +9,7 @@ const routes = [
     component: LoginView,
   },
   {
-    path: "/welcome",
+    path: "/welcome/:userId",
     name: "WelcomeView",
     component: WelcomeView,
   },
